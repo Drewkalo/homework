@@ -1,4 +1,4 @@
-f = open('C:/Users/Эльмира/Documents/GitHub/homework/1 work/input1.txt', 'r')
+f = open('C:/Users/Эльмира/Documents/GitHub/homework/1 week/input1.txt', 'r')
 strnum = f.readline().strip()
 op = f.readline().strip()
 b = f.readline().strip()
@@ -37,6 +37,6 @@ while s > 0:
 print(otv)                      #Проверка
 
 f.close()
-z = open('C:/Users/Эльмира/Documents/GitHub/homework/1 work/output1.txt', 'w')
+z = open('C:/Users/Эльмира/Documents/GitHub/homework/1 week/output1.txt', 'w')
 z.write(str(s))
 z.close()                       #Например, сумму чисел 1 2 3 в четверичной СС он посчитал, получилось 12, true

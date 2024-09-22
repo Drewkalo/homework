@@ -1,4 +1,4 @@
-f = open('C:/Users/Эльмира/Documents/GitHub/homework/1 work/formst.txt')
+f = open('C:/Users/Эльмира/Documents/GitHub/homework/1 week/formst.txt')
 num1 = f.readline().strip()
 op = f.readline().strip()
 dig = [int(num) for num in num1.split()]
@@ -14,6 +14,6 @@ elif op == '*':
 
 print(s)
 f.close()
-z = open('C:/Users/Эльмира/Documents/GitHub/homework/1 work/output.txt', 'w')
+z = open('C:/Users/Эльмира/Documents/GitHub/homework/1 week/output.txt', 'w')
 z.write(str(s))
 z.close()
