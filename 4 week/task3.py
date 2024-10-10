@@ -17,4 +17,6 @@ more15 = [c for c in df['PetalLengthCm'] if c > 1.5]
 a1.pie([len(les12), len(more12)], labels = ['<= 1.2 cm','> 1.2 cm,'])
 a2.pie([len(les15), len(more15)], labels = ['<= 1.5 cm','> 1.5 cm,'])
 
+plt.savefig('C:/Users/Эльмира/Documents/GitHub/homework/4 week/graph_task3.png')
+
 plt.show()
