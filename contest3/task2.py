@@ -1,59 +1,21 @@
-class Node:
-    def __init__(self, val=None):
-        self.value = val
-        self.left = None
-        self.right = None
-        self.height = 0
-class AVL:
-    def __init__(self):
-        self.node = None
-    def balance(self):
-        if self.node:
-            left_height = self.node.left.height()
-            right_height = self.node.right.height()
-        else:
-            left_height=0
-            right_height=0
-        return left_height - right_height
-    def height(self):
-        if not self.node:
-            return 0
-        return self.node.height
-    def fix_height(self):
-        self.node.height = 1 + max(self.node.left.height(),self.node.right.height())
-    def rebalance(self):
-        pass
-    def insert(self, val):
-        if self.node is None:
-            self.node = Node(val)
-            self.node.left = AVL()
-            self.node.right = AVL()
-        else:
-            if val < self.node.value:
-                self.node.left.insert(val)
-            else:
-                self.node.right.insert(val)
-        self.fix_height()
-        self.rebalance()
-    def _vivod(self, node, res):
-        if node:
-            self._vivod(node.left.node, res)
-            res.append(node.value)
-            self._vivod(node.right.node, res)
+temp = [int(c) for c in input().split()]
+n, m = temp[0], temp[1]
+clients = list(map(int, input().split()))
+total_time = 0
+cash_machine = [0] * m
 
-    def vivod_invert(self):
-        res = []
-        self._vivod_invert(self.node, res)
-        return res
+while bool(any(cash_machine)) == True or bool(clients) == True:
+    less_time_diff = 10e10
+    for i in range(m):
+        if cash_machine[i] == 0 and bool(clients) == True:
+            cash_machine[i] = clients.pop(0)
+    for i in range(m):
+        if cash_machine[i] > 0:
+            less_time_diff = min(less_time_diff, cash_machine[i])
+    for i in range(m):
+        if  cash_machine[i] > 0:
+            cash_machine[i] -= less_time_diff
 
-    def _vivod_invert(self, node, res):
-        if node:
-            self._vivod_invert(node.right.node, res)
-            res.append(node.value)
-            self._vivod_invert(node.left.node, res)
-res = AVL()
+    total_time += less_time_diff
 
-count = int(input())
-for i in range(count):
-    res.insert(int(input()))
-
+print(total_time)
