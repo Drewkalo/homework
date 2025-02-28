@@ -1,5 +1,5 @@
 #Реализация dfs
-
+#список посещённых вершин 
 visited = []
 
 def dfs(G,visited,start):
