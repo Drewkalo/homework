@@ -1,5 +1,8 @@
-M = int(input())
+#алгоритм поиска пути между всеми парами вершин в графе (O(V^2))
+#строим матрицу смежности d, где d[i][j] расстояние между вершинами i и j.
+#Перебором по всем вершинам k пытаемся уменьшить расстояние d[j][k] = min(d[j][k], d[j][i] + d[i][k])
 
+M = int(input())
 G = {}
 
 for i in range(M):
@@ -14,7 +17,7 @@ for i in range(M):
     else:
         G[v2] = {v1:w}
 
-def floyd_warshall(G, start):
+def floyd_warshall(G):
     d = {i:{j:float("inf") for j in G} for i in G}
     for i in G:
         d[i][i] = 0
@@ -26,3 +29,5 @@ def floyd_warshall(G, start):
             for k in G:
                 d[j][k] = min(d[j][k], d[j][i] + d[i][k])
     return d
+
+print(floyd_warshall(G))
