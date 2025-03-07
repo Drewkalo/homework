@@ -34,7 +34,7 @@ visited = []
 path = []
 
 temp = is_eulerian(graph1)
-if temp [0] :
+if temp[0]:
     start_node = temp[1]
 
     dfs(graph1, visited, start_node, path)
