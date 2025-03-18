@@ -38,10 +38,10 @@ class DSU:
         else:
             self.parent[p2] = p1
 
-def Kruskal(V,edges):
+def Kruskal(G,edges):
     MST = []
     sorted_edges = sorted(edges)
-    dsu = DSU(V)
+    dsu = DSU(G)
     for edge in sorted_edges:
         if dsu.find(edge[1]) != dsu.find(edge[2]):
             dsu.union(edge[1],edge[2])

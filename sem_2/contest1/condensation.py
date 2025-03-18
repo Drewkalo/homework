@@ -1,3 +1,6 @@
+#докрутить с множествами
+import sys
+sys.setrecursionlimit(2000)
 class Node:
     def __init__(self,val = None):
         self.val = val

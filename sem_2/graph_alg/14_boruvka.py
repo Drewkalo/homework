@@ -7,7 +7,7 @@ edges = []
 for i in range(M):
     v1,v2,w = input().split()
     w = float(w)
-    edges.append((w,v1,v2))
+    edges.append((v1,v2,w))
     if v1 in G:
         G[v1][v2] = w
     else:
@@ -21,10 +21,12 @@ class DSU:
     def __init__(self,G):
         self.parent = {i:i for i in G}
         self.rank = {i:1 for i in G}
+
     def find(self,v):
         if self.parent[v] != v:
             self.parent[v] = self.find(self.parent[v])
         return self.parent[v]
+    
     def union(self,v1,v2):
         p1 = self.find(v1)
         p2 = self.find(v2)
