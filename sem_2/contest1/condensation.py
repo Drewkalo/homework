@@ -1,6 +1,6 @@
-#докрутить с множествами
 import sys
-sys.setrecursionlimit(2000)
+sys.setrecursionlimit(10000)
+
 class Node:
     def __init__(self,val = None):
         self.val = val
@@ -38,11 +38,11 @@ for i in range(m):
     graph[v1].add(v2)
     reversed_graph[v2].add(v1)
 
-visited = []
+visited = set()
 stack = Stack()
 
 def dfs(G,visited,start, stack = None, list = None):
-    visited.append(start)
+    visited.add(start)
     for i in G[start]:
         if i not in visited:
             dfs(G,visited,i,stack,list)
@@ -55,7 +55,7 @@ for i in graph:
     if i not in visited:
         dfs(graph,visited,i, stack = stack)
 
-visited = []
+visited = set()
 result = []
 
 while stack.head:

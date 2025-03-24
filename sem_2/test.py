@@ -1,48 +1,35 @@
-n, m = map(int, input().split())
+s = str(input())
 
-graph = {i: {} for i in range(n + 1)}
+def z_function(S):
+    zf = [0] * len(S)
+    left, right = 0,0
+    for i in range(1, len(S)):
+        zf[i] = max(0, min(zf[i-left], right - i))
+        while i + zf[i] < len(S) and S[zf[i]] == S[i + zf[i]]:
+            zf[i] += 1
+        if i + zf[i] > right:
+            left, right = i, i + zf[i]
+    return zf
+# доработать z[i] + i = |s| and |s| % i == 0
 
-for _ in range(m):
-    parts = input().split()
-    I, r, k, sign = int(parts[0]), int(parts[1]), int(parts[2]), parts[3]
-    left = I - 1
-    right = r
-
-    if sign == ">=":
-        u, v = right, left
-        new_weight = -k
-        if v in graph[u]:
-            if new_weight < graph[u][v]:
-                graph[u][v] = new_weight
-        else:
-            graph[u][v] = new_weight
-    else:
-        u, v = left, right
-        new_weight = k
-        if v in graph[u]:
-            if new_weight < graph[u][v]:
-                graph[u][v] = new_weight
-        else:
-            graph[u][v] = new_weight
-
-def bellman_ford(graph, start, num_nodes):
-    dist = {node: float('inf') for node in graph}
-    dist[start] = 0
-
-    for _ in range(num_nodes):
-        updated = False
-        for u in graph:
-            for v in graph[u]:
-                if dist[u] != float('inf') and dist[v] > dist[u] + graph[u][v]:
-                    dist[v] = dist[u] + graph[u][v]
-                    updated = True
-        if not updated:
+def restock(s):
+    zf = z_function(s)
+    temp = sorted(list(set(zf)))
+    try:
+        deg = temp[1]
+    except IndexError:
+        return s
+    if deg == 1:
+        return "NO"
+    flag = True
+    for i in temp[::-1]:
+        if i % deg != 0:
+            flag = False
             break
 
-    for u in graph:
-        for v in graph[u]:
-            if dist[u] != float('inf') and dist[v] > dist[u] + graph[u][v]:
-                return "NO"
-    return "YES"
-
-print(bellman_ford(graph, 0, n + 1))
+    if flag:
+        return(s[0:deg])
+    else:
+        return "NO"
+    
+print(restock(s))
