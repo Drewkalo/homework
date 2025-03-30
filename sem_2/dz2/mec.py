@@ -19,7 +19,7 @@ def dfs(G,visited,matching,start):
         return False
     visited.add(start)
     for i in G[start]:
-        if not matching[i] or dfs(G,visited,matching,matching[i]):
+        if  not matching[i] or dfs(G,visited,matching,matching[i]):
             matching[i] = start
             matching[start] = i
             return True            
