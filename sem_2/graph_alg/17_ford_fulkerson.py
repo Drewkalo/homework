@@ -26,7 +26,7 @@ def dfs(G,start,finish,visited,f_min):
             if flow > 0:
                 return flow
     return 0
-        
+     
 
 def ford_fulkerson(G,start,finish):
     visited = set()
