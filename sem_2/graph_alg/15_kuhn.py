@@ -13,7 +13,7 @@ for i in range(M):
     else:
         G[v2] = {v1}
 
-
+print(G)
 def dfs(G,visited,matching,start):
     if start in visited:
         return False

@@ -83,7 +83,8 @@ for _ in range(t):
     #print('goals:', goals)
     #print('robot:', robot)
     if len(robot) > len(goals):
-        res.append(-1)
+        res.append(-1 )
+        continue
     #print('sheme:',sheme)
 
     matrix = []
@@ -111,13 +112,11 @@ for _ in range(t):
     value = -1
     low_time = 0
     high_time = 0
-    visited = set()
     for part in matrix:
         curr_max = max([v for v in part if v != float('inf')])
         high_time = max(high_time, curr_max)
 
     #print(high_time)
-
     while low_time <= high_time:
         mid_time = (low_time + high_time) // 2
 
@@ -126,18 +125,17 @@ for _ in range(t):
             for j in range(len(robot), len(robot) + len(goals)):
                 if matrix[i][j - len(robot)] <= mid_time:
 
-                    if i not in graph:
+                    if str(i) not in graph:
                         graph[str(i)] = set()
                         graph[str(i)].add(str(j))
                     else:
                         graph[str(i)].add(str(j))
                         
-                    if j not in graph:
+                    if str(j) not in graph:
                         graph[str(j)] = set()
                         graph[str(j)].add(str(i))
                     else:
                         graph[str(j)].add(str(i))
-      
         
         #print(Kuhn(graph))
         #print(len([i for i in Kuhn(graph).values() if i is not None]))
