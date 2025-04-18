@@ -1,63 +1,75 @@
 N, k = map(int, input().split())
 graph = {}
-inf = float('inf')
-
+res = 0
+inf = float("inf")
 for i in range(N):
-    line = input().strip()
-    for j in range(N):
-        exp = i
-        proc = j + N
-        if line[j] == '1':
-            capacity = inf
+    temp = input()
+    for j in range(len(temp), 2*len(temp)):
+        if i not in graph:
+            if temp[j-len(temp)] == str(0):
+                graph[i] = {j:k}
+            else:
+                graph[i] = {j:inf}
         else:
-            capacity = k
-        if exp not in graph:
-            graph[exp] = {}
-        if proc not in graph:
-            graph[proc] = {}
-        graph[exp][proc] = capacity
-        graph[proc][exp] = capacity
+            if temp[j-len(temp)] == str(0):
+                graph[i][j] = k
+            else:
+                graph[i][j] = inf
 
-def dfs(u, visited, match, graph):
-    if u in visited:
+        if j not in graph:
+            if temp[j-len(temp)] == str(0):
+                graph[j] = {i:k}
+            else:
+                graph[j] = {i:inf}
+        else:
+            if temp[j-len(temp)] == str(0):
+                graph[j][i] = k
+            else:
+                graph[j][i] = inf
+
+#print(graph)
+
+def dfs(G, visited, matching, start):
+    if start in visited:
         return False
-    visited.add(u)
-    for v in graph.get(u, {}):
-        if graph[u][v] > 0:
-            if match[v] is None or dfs(match[v], visited, match, graph):
-                match[u] = v
-                match[v] = u
-                return True
+    visited.add(start)
+    for neighbor in G.get(start, set()):
+        if ((matching[neighbor] is None or dfs(G, visited, matching, matching[neighbor])) and G[start][neighbor] > 0 and G[neighbor][start] > 0):
+            matching[neighbor] = start
+            matching[start] = neighbor
+            return True
     return False
 
-def kuhn(graph, N):
-    match = {u: None for u in graph}
-    for u in range(N):
-        if match[u] is None:
+def Kuhn(G):
+    matching = {v: None for v in G}
+    
+    for v in range(N):
+        if matching[v] is None:
             visited = set()
-            dfs(u, visited, match, graph)
-    return match
+            dfs(G, visited, matching, v)
+    return matching
 
-res = 0
+#match = Kuhn(graph)
+#print(match)
+
+#print(graph)
 
 while True:
-    match = kuhn(graph, N)
-    all_paired = all(match.get(u) is not None for u in range(N))
-    if not all_paired:
+    match = Kuhn(graph)
+    #print(match)
+    #print(graph)
+    if len([i for i in match.values() if i is not None])//2 == N:
+        res += 1
+        for vert in match:
+            if graph[vert][match[vert]] != inf:
+                del graph[vert][match[vert]]
+                for neighbor in graph[vert]:
+                    graph[vert][neighbor] -= 1
+            else:
+                del graph[vert][match[vert]]
+        #print(graph)
+    else:
         break
-    res += 1
-    used_edges = set()
-    for u in range(N):
-        v = match[u]
-        if (u, v) not in used_edges:
-            used_edges.add((u, v))
-            used_edges.add((v, u))
-            if graph[u][v] != inf:
-                graph[u][v] -= 1
-                graph[v][u] -= 1
-                if graph[u][v] <= 0:
-                    del graph[u][v]
-                    del graph[v][u]
 
 print(res)
 
