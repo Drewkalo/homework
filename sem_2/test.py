@@ -1,75 +1,42 @@
-N, k = map(int, input().split())
-graph = {}
-res = 0
-inf = float("inf")
-for i in range(N):
-    temp = input()
-    for j in range(len(temp), 2*len(temp)):
-        if i not in graph:
-            if temp[j-len(temp)] == str(0):
-                graph[i] = {j:k}
-            else:
-                graph[i] = {j:inf}
-        else:
-            if temp[j-len(temp)] == str(0):
-                graph[i][j] = k
-            else:
-                graph[i][j] = inf
+import random
 
-        if j not in graph:
-            if temp[j-len(temp)] == str(0):
-                graph[j] = {i:k}
-            else:
-                graph[j] = {i:inf}
-        else:
-            if temp[j-len(temp)] == str(0):
-                graph[j][i] = k
-            else:
-                graph[j][i] = inf
-
-#print(graph)
-
-def dfs(G, visited, matching, start):
-    if start in visited:
-        return False
-    visited.add(start)
-    for neighbor in G.get(start, set()):
-        if ((matching[neighbor] is None or dfs(G, visited, matching, matching[neighbor])) and G[start][neighbor] > 0 and G[neighbor][start] > 0):
-            matching[neighbor] = start
-            matching[start] = neighbor
-            return True
-    return False
-
-def Kuhn(G):
-    matching = {v: None for v in G}
+def rabin_karp(s, T):
+    if len(s) == 0 or len(T) < len(s):
+        return 0
     
-    for v in range(N):
-        if matching[v] is None:
-            visited = set()
-            dfs(G, visited, matching, v)
-    return matching
+    q = 2**13 - 1
+    x = random.randint(3, q - 1)
+    m = len(s)
+    n = len(T)
+    res = 0
 
-#match = Kuhn(graph)
-#print(match)
+    # Генерация хешей для всех циклических сдвигов
+    shift_hashes = {}
+    for shift_num in range(m):
+        shifted = s[shift_num:] + s[:shift_num]
+        h = ord(shifted[0]) % q
+        for j in range(1, m):
+            h = (h * x + ord(shifted[j])) % q
+        if h not in shift_hashes:
+            shift_hashes[h] = []
+        shift_hashes[h].append(shifted)
 
-#print(graph)
+    # Предвычисление хешей для текста T
+    ht = [0] * (n + 1)
+    x_pow_m = pow(x, m, q)
+    for i in range(n):
+        ht[i + 1] = (x * ht[i] + ord(T[i])) % q
 
-while True:
-    match = Kuhn(graph)
-    #print(match)
-    #print(graph)
-    if len([i for i in match.values() if i is not None])//2 == N:
-        res += 1
-        for vert in match:
-            if graph[vert][match[vert]] != inf:
-                del graph[vert][match[vert]]
-                for neighbor in graph[vert]:
-                    graph[vert][neighbor] -= 1
-            else:
-                del graph[vert][match[vert]]
-        #print(graph)
-    else:
-        break
+    # Поиск совпадений
+    for i in range(n - m + 1):
+        current_h = (ht[i + m] - (x_pow_m * ht[i]) % q) % q
+        if current_h in shift_hashes:
+            candidate_shifts = shift_hashes[current_h]
+            for candidate in candidate_shifts:
+                if T[i:i + m] == candidate:
+                    res += 1
+                    break  # Учитываем только одно совпадение на позиции i
 
-print(res)
+    return res
 
+print(rabin_karp('abc', 'abcabacbacababc'))  # Пример вызова

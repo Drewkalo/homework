@@ -13,6 +13,7 @@ def prefix(s:str):
             k += 1
 
         pr[i]=k
+
     return pr
 
-print(prefix("abracadabra"))
+print(prefix("AABACADAEAFAGAHAIAJAKALAMANAOAPAQARAA"))

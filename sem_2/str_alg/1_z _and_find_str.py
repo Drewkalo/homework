@@ -16,6 +16,6 @@ def part(P, S):
     mesh = z_function(P + "#" + S)
     return (mesh.index(len(P)) - len(P) - 1) 
 
-print(part(p, s))
+print(z_function('abracadabra'))
 
 # можно выводить индексы подстроки в тексте
