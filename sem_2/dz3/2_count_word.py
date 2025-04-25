@@ -14,6 +14,7 @@ def rabin_karp(s,T):
         for j in range(1,len(i)):
             hs = (x*hs+ord(i[j]))%q
         hashes[i] = hs
+        
     for i in range(len(T)):
         ht[i+1] = (x*ht[i]+ord(T[i]))%q
 
