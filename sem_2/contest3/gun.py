@@ -1,43 +1,40 @@
 n = int(input())
-flag = False
 drum_before = input().strip()
 drum_after = input().strip()
 
-shift = '$' + drum_before
-bullets = max(drum_before.count('1'), drum_after.count('1'))
-if bullets > drum_after.count('1'):
-    print('Yes')
-    flag = True
-if bullets == n:
-    print('Yes')
-    flag = True
-
-temp = set()
-control_case1 = '1' + drum_after
-control_case2 = '0' + drum_after
-# print('case1:', control_case1)
-# print('case2:', control_case2)
+cases = []
 for i in range(n):
-    sample = shift[i:] + shift[:i]
-    #print(sample)
-    if sample.replace('$', '1') == control_case1:
-        if sample.replace('$', '0') == control_case2:
-            print('Random')
-            flag = True
-            break
+    flag = True
+    for j in range(n-1):
+        shift = (i + j + 1)%n
+        # print('shift:', shift)
+        if not shift:
+            continue
         else:
-            temp.add('Yes')
+            unknown_pos = shift -1
+            if unknown_pos >= len(drum_before) or drum_before[unknown_pos] != drum_after[j]:
+                flag = False
+                break
+    if flag:
+        cases.append(i)
 
-    if sample.replace('$', '0') == control_case2:
-        if sample.replace('$', '1') == control_case1:
-            print('Random')
-            flag = True
-            break
-        else:
-            temp.add('No')
+bullet_var = set()
+for case in cases:
+    if not case:
+        bullet_var.add(0)
+        bullet_var.add(1)
+    else:
+        bullet_var.add(int(drum_before[case-1]))
 
-if not flag:
-    if len(temp) != 1:
+# print('bullet_var:', bullet_var)
+
+if 1 in bullet_var:
+    if 0 in bullet_var:
         print('Random')
     else:
-        print(temp.pop())
+        print('Yes')
+else:
+    if 1 in bullet_var:
+        print('Random')
+    else:
+        print('No')    
