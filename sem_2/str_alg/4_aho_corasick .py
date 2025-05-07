@@ -1,5 +1,4 @@
-#alphabet = 'abcdefghijklmnopqrstuvwxyz'
-alphabet = 'ab'
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
 class Deque_Node:
     def __init__(self,val = None):

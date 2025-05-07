@@ -2,28 +2,41 @@ import cmath
  
 a = []
 
-def FFT(a, deg):
-    if len(a) == 1:
-        return a[0]
-    
-    even = a[::2]
-    odd = a[1::2]
-    
-    temp1 = FFT(even, deg/2)
-    temp2 = FFT(odd, deg/2)
+#Рекурсивный fft
 
-    t = [cmath.exp(2j * cmath.pi * k / deg) * temp2(k)  for k in range(deg//2)]
-    return [(temp1[k] + t[k]) for k in range(deg//2)] + [(temp1[k] - t[k]) for k in range(deg//2)]
+def fft(x):
+    n = len(x)
+    if n == 1:
+        return x
+    x_even = fft(x[::2])
+    x_odd = fft(x[1::2])
+    t = [cmath.exp(-2j * cmath.pi * k / n) * x_odd[k] for k in range(n // 2)]
+    return [x_even[k] + t[k] for k in range(n // 2)] + [x_even[k] - t[k] for k in range(n // 2)]
 
-def iFFT(a, deg):
-    if len(a) == 1:
-        return a[0]
-    
-    even = a[::2]
-    odd = a[1::2]
-    
-    temp1 = iFFT(even, deg/2)
-    temp2 = iFFT(odd, deg/2)
+#Обратный fft
 
-    t = [cmath.exp(2j * cmath.pi * k / deg) * temp2(k)  for k in range(deg//2)]
-    return [(temp1[k] + t[k]) for k in range(deg//2)] + [(temp1[k] - t[k]) for k in range(deg//2)]
+def ifft(fft_x):
+    n = len(fft_x)
+    if n == 1:
+        return fft_x
+    x_even = ifft(fft_x[::2])
+    x_odd = ifft(fft_x[1::2])
+    t = [cmath.exp(2j * cmath.pi * k / n) * x_odd[k] for k in range(n // 2)]
+    return [x_even[k] + t[k] for k in range(n // 2)] + [x_even[k] - t[k] for k in range(n // 2)]
+
+
+#Перемножение полиномов
+
+def mult_poly(p,q):
+    degree = max(len(p),len(q))
+    degree = 1 << ((degree-1).bit_length()+1)
+    print(degree)
+    new_p = [0]*degree
+    new_q = [0]*degree
+    new_p[:len(p)] = p
+    new_q[:len(p)] = q
+    fft_p = fft(new_p)
+    fft_q = fft(new_q)
+    fft_pq = [fft_p[i] * fft_q[i] for i in range(len(fft_p))]
+    res = (np.abs(ifft(fft_pq))/degree)
+    return [int(res[i]) for i in range(len(res))]

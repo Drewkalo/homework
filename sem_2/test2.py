@@ -1,5 +1,1 @@
-a = set()
-a.add(1)
-a.add(2)
-a.add(2)
-print(a)
+print('0' * 10000)
