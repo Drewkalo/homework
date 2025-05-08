@@ -1,42 +1,45 @@
+'''ef z_function(S, bord):
+    n = len(S)
+    zf = [0] * n
+    left, right = 0,0
+    for i in range(1, n):
+        zf[i] = max(0, min(zf[i-left], right - i))
+        while i + zf[i] < n and S[zf[i]] == S[i + zf[i]]:
+            zf[i] += 1
+        if i + zf[i] > right:
+            left, right = i, i + zf[i]
+    return max(zf[bord:])'''
+def prefix(s:str, bord):
+    n = len(s)
+    pr = [0] * n
+
+    for i in range(1, n):
+        k = pr[i-1]
+
+        while k != 0 and s[k] != s[i]:
+            k = pr[k-1]
+
+        if s[k] == s[i]:
+            k += 1
+
+        pr[i]=k
+
+    return max(pr[bord:])
+
+
 n = int(input())
 drum_before = input().strip()
 drum_after = input().strip()
-if n == 500000 and drum_before[:4] != '0001':
+
+case_1 = ('1' + drum_after) * 2
+case_0 = ('0' + drum_after) * 2
+
+temp_no = prefix(drum_before +'@'+ case_0,n)
+temp_yes = prefix(drum_before +'@'+ case_1,n)
+
+if temp_no >= (n-1) and temp_yes >= (n-1):
     print('Random')
+elif temp_no >= (n-1):
+    print('No')
 else:
-    cases = []
-    for i in range(n):
-        flag = True
-        for j in range(n-1):
-            shift = (i + j + 1)%n
-            # print('shift:', shift)
-            if not shift:
-                continue
-            else:
-                unknown_pos = shift -1
-                if unknown_pos >= len(drum_before) or drum_before[unknown_pos] != drum_after[j]:
-                    flag = False
-                    break
-        if flag:
-            cases.append(i)
-
-    bullet_var = set()
-    for case in cases:
-        if not case:
-            bullet_var.add(0)
-            bullet_var.add(1)
-        else:
-            bullet_var.add(int(drum_before[case-1]))
-
-    # print('bullet_var:', bullet_var)
-
-    if 1 in bullet_var:
-        if 0 in bullet_var:
-            print('Random')
-        else:
-            print('Yes')
-    else:
-        if 1 in bullet_var:
-            print('Random')
-        else:
-            print('No')    
+    print('Yes')

@@ -68,17 +68,7 @@ class Trie:
             v = v.children[char]
             pos += 1
         return (result, v.output)
-    
-'''
-a = Trie()
-a.build(2, 2)
-price = [1,4] #[1,5]
-for i in ['00','00','00','01','11','11','00', '11']:
-    a.add(i)
-cont = generate_numbers(2, 2)
-for i in cont:
-    print(a.solve(price, i))
-'''
+
 
 inp = [int(i) for i in input().split()]
 price = [int(i) for i in input().split()]
