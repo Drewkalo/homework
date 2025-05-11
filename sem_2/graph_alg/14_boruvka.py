@@ -56,8 +56,8 @@ def Boruvka(G,edges):
                 if not min_w[p2] or min_w[p2][2] > w:
                     min_w[p2] = (u,v,w)
         for edge in min_w:
-            if edge:
-                u,v,w = edge
+            if  min_w[edge]:
+                u,v,w = min_w[edge]
                 if T.find(u) != T.find(v):
                     T.union(u,v)
                     MST.append((u,v,w))

@@ -19,15 +19,20 @@ for i in range(M):
 
 def floyd_warshall(G):
     d = {i:{j:float("inf") for j in G} for i in G}
+    p = {i: {j: None for j in G} for i in G}
+
     for i in G:
         d[i][i] = 0
+        p[i][i] = i
     for node1 in G:
         for node2 in G[node1]:
             d[node1][node2] = G[node1][node2]
+            p[node1][node2] = node1
     for i in G:
         for j in G:
             for k in G:
                 d[j][k] = min(d[j][k], d[j][i] + d[i][k])
-    return d
+                p[j][k] = p[i][k]
+    return d, p
 
 print(floyd_warshall(G))
