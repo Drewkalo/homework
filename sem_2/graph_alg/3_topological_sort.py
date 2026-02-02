@@ -11,10 +11,16 @@ def topological(G,visited,start,res):
             topological(G,visited,i,res)
     res.append(start)
 
-G = {'A':{'D','E'},'B':{'D'},'C':{'E','H'},'D':{'F','G'},'E':{'G'},'F':set(),'G':set(),'H':set()}
+N,M = map(int,input().split())
+
+graph = {i:set() for i in range(1,N+1)}
+
+for i in range(M):
+    v1,v2 = map(int,input().split())
+    graph[v1].add(v2)
 
 #повторяем topological для каждой вершины, если она не была посещена, чтобы точно пройти все вершинки.
-for i in G:
+for i in graph:
     if i not in visited:
-        topological(G,visited,i,res)
+        topological(graph,visited,i,res)
 print(res[::-1])
